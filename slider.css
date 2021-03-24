@@ -1,0 +1,131 @@
+:root {
+  --control-bg: #ffffff;
+  --control-bg-hover: #fefefe;
+  --control-bg-active: #fdfdfd;
+  --indicator-item-bg: #ffffff;
+  --indicator-item-bg-hover: #fefefe;
+  --indicator-item-bg-active: red;
+  --indicator-dots-item-size: 8px;
+}
+
+.rslider {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+.rslider__current {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 80%;
+  justify-content: center;
+  align-items: center;
+  background: black;
+}
+
+.rslider__view {
+  width: 100%;
+  flex: 1 1 100%;
+  overflow: hidden;
+}
+
+.rslider__content {
+  position: relative;
+  overflow-x: scroll;
+  width: auto;
+  display: block;
+  height: 100%;
+}
+
+.rslider-slide {
+  font-size: 36px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.rslider__control {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 0 0 10%;
+  background: var(--control-bg);
+  user-select: none;
+}
+
+.rslider__control:hover {
+  cursor: pointer;
+  background: var(--control-bg-hover);
+}
+
+.rslider__control:active {
+  cursor: default;
+  background: var(--control-bg-active);
+}
+
+.rslider__left {
+}
+
+.rslider__right {
+}
+
+/**************/
+/* Indicators */
+/**************/
+
+.rslider-indicator {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.rslider__line-indicator-item {
+  width: 48px;
+  height: 2px;
+  background-color: var(--indicator-item-bg);
+  transition: background-color 0.2s linear;
+  margin-right: 4px;
+}
+
+.rslider__line-indicator-item.rslider__line-indicator-item_active {
+  background-color: var(--indicator-item-bg-active);
+}
+
+.rslider__line-indicator-item:hover {
+  background-color: var(--indicator-item-bg-hover);
+}
+
+.rslider__line-indicator-item:last-child {
+  margin-right: 0;
+}
+
+.rslider__dots-indicator-item {
+  width: var(--indicator-dots-item-size);
+  height: var(--indicator-dots-item-size);
+  border-radius: 100%;
+  background-color: var(--indicator-item-bg);
+  transition: background-color 0.2s linear;
+  margin-right: 4px;
+}
+
+.rslider__dots-indicator-item.rslider__dots-indicator-item_active {
+  background-color: var(--indicator-item-bg-active);
+}
+
+.rslider__dots-indicator-item:hover {
+  background-color: var(--indicator-item-bg-hover);
+}
+
+.rslider__dots-indicator-item:last-child {
+  margin-right: 0;
+}
