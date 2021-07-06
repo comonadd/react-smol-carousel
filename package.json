@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-examples": "node_modules/.bin/esbuild --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap",
-    "build": "npm run-script build-examples"
+    "build": "npm run-script build-examples",
+    "dev": "node_modules/.bin/esbuild --watch --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap"
   },
   "repository": {
     "type": "git",
