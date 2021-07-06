@@ -67,14 +67,15 @@
   flex: 0 0 10%;
   background: var(--control-bg);
   user-select: none;
+  cursor: default;
 }
 
-.rslider__control:hover {
+.rslider__control:not([disabled]):hover {
   cursor: pointer;
   background: var(--control-bg-hover);
 }
 
-.rslider__control:active {
+.rslider__control:not([disabled]):active {
   cursor: default;
   background: var(--control-bg-active);
 }

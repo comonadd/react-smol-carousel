@@ -44,7 +44,7 @@ const BasicExample = () => {
 };
 
 const ControllableExample = () => {
-  const slider = useSliderController({ infinite: true });
+  const slider = useSliderController({ infinite: false });
   React.useEffect(() => {
     console.log(`Current slide: ${slider.currentSlide}`);
   }, [slider.currentSlide]);

@@ -32,6 +32,7 @@ interface SliderController {
 }
 
 interface SliderControllerOptions {
+  // Whether the slider wraps around
   infinite?: boolean;
   startingSlide?: number;
 }
@@ -134,6 +135,7 @@ const Slider = (props: SliderProps) => {
     });
   }, [children, currentSlide]);
   const sliderContainerRef = React.useRef(null);
+
   React.useLayoutEffect(() => {
     console.log(slidesRef);
     if (slidesRef.current.length === 0) return;
@@ -142,6 +144,7 @@ const Slider = (props: SliderProps) => {
     sliderContainerRef.current.scrollLeft = elem.offsetLeft;
     console.log("set: " + sliderContainerRef.current.scrollLeft + " because of " + elem.offsetLeft);
   }, [renderedSlides]);
+
   const renderedIndicator = React.useMemo(() => {
     if (indicator === undefined) return null;
     const containerCn = itcn[indicator];
@@ -169,12 +172,22 @@ const Slider = (props: SliderProps) => {
     }
     return <div className={cn(["rslider-indicator", containerCn])}>{renderedLines}</div>;
   }, [currentSlide]);
+
   React.useEffect(() => {
     __setMetaInfo({ numSlides: children.length });
   }, [children.length, __controllerId]);
+
+  const amountOfSlides = children.length;
+  const isThereSomethingToLeft = infinite || currentSlide !== 0;
+  const isThereSomethingToRight = infinite || currentSlide !== (amountOfSlides - 1);
+
   return (
     <div className={cn([props.className, "rslider"])}>
-      <div className={cn(["rslider__control", "rslider__left"])} onClick={moveLeft}>
+      <div
+        className={cn(["rslider__control", "rslider__left", classes.control])}
+        onClick={moveLeft}
+        disabled={!isThereSomethingToLeft}
+      >
         Left
       </div>
       <div className={cn(["rslider__current"])}>
@@ -185,7 +198,11 @@ const Slider = (props: SliderProps) => {
         </div>
         {renderedIndicator}
       </div>
-      <div className={cn(["rslider__control", "rslider__right"])} onClick={moveRight}>
+      <div
+        className={cn(["rslider__control", "rslider__right", classes.control])}
+        onClick={moveRight}
+        disabled={!isThereSomethingToRight}
+      >
         Right
       </div>
     </div>
