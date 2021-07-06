@@ -7,20 +7,37 @@ const Example = (props: { title: string; children: React.Children }) => {
   const { title, children } = props;
   return (
     <div className="rslider-example">
-      <div className="rslider-example__title"><h2>{title}</h2></div>
+      <div className="rslider-example__title">
+        <h2>{title}</h2>
+      </div>
       <div className="rslider-example__content">{children}</div>
     </div>
   );
 };
 
 const BasicExample = () => {
+  const renderedPics = React.useMemo(() => {
+    const numPics = Math.round(Math.random() * 10);
+    const resultingPics = [];
+    for (let i = 0; i < numPics; ++i) {
+      const backgroundColor = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+      resultingPics.push(
+        <div
+          key={i}
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: `rgb(${backgroundColor.join(",")})`,
+          }}
+        ></div>,
+      );
+    }
+    return resultingPics;
+  }, []);
   return (
     <Example title="Basic slider">
       <Slider className="app-slider" indicator={SliderIndicator.Lines} infinite>
-        <div>Hello</div>
-        <div>This is me</div>
-        <div>How are you</div>
-        <div>Bye</div>
+        {renderedPics}
       </Slider>
     </Example>
   );
@@ -56,10 +73,11 @@ const ControllableExample = () => {
   return (
     <Example title="Controllable slider">
       <Slider className="app-slider" indicator={SliderIndicator.Dots} controller={slider}>
-        <div>Hello</div>
-        <div>This is me</div>
-        <div>How are you</div>
-        <div>Bye</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
       </Slider>
     </Example>
   );
