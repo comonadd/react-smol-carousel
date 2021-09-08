@@ -90,7 +90,14 @@ export const useSliderController = (
     }
   }, [currentSlide, metaInfo]);
   const __setMetaInfo = useCallback(setMetaInfo);
-  return { currentSlide, nextSlide, prevSlide, __setMetaInfo, __controllerId };
+  return {
+    currentSlide,
+    nextSlide,
+    prevSlide,
+    setCurrentSlide,
+    __setMetaInfo,
+    __controllerId,
+  };
 };
 
 export enum SliderIndicator {
@@ -101,6 +108,7 @@ export enum SliderIndicator {
 export interface SliderProps extends SliderControllerOptions {
   indicator?: SliderIndicator;
   enableKeys?: boolean; // enable arrow keys
+  indicatorClickable?: boolean; // enable navigation with indicator click
   children: React.Children;
   className?: string;
   controller?: Controller;
@@ -118,9 +126,21 @@ const itcn = {
 };
 
 const Slider = (props: SliderProps) => {
-  const { enableKeys = false, indicator, children, infinite } = props;
-  const { __controllerId, __setMetaInfo, nextSlide, prevSlide, currentSlide } =
-    props.controller ?? useSliderController(props);
+  const {
+    indicatorClickable = false,
+    enableKeys = false,
+    indicator,
+    children,
+    infinite,
+  } = props;
+  const {
+    __controllerId,
+    setCurrentSlide,
+    __setMetaInfo,
+    nextSlide,
+    prevSlide,
+    currentSlide,
+  } = props.controller ?? useSliderController(props);
   const classes = props.classes ?? {};
   const numSlides = children.length;
   const moveLeft = () => {
@@ -177,6 +197,11 @@ const Slider = (props: SliderProps) => {
             [icn]: true,
             [icnActive]: currentSlide === i,
           })}
+          onClick={() => {
+            if (indicatorClickable) {
+              setCurrentSlide(i);
+            }
+          }}
         ></div>
       );
     }

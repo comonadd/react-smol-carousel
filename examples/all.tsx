@@ -45,6 +45,7 @@ const BasicExample = () => {
         indicator={SliderIndicator.Lines}
         infinite
         enableKeys
+        indicatorClickable
       >
         {renderedPics}
       </Slider>
