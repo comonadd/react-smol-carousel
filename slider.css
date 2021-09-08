@@ -23,6 +23,8 @@
   justify-content: center;
   align-items: center;
   background: black;
+  cursor: grab;
+  user-select: none;
 }
 
 .rslider__view {
@@ -35,10 +37,11 @@
   width: auto;
   height: 100%;
   display: flex;
-  overflow-x: auto;
+  overflow-x: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 }
+
 
 .rslider-slide {
   font-size: 36px;
