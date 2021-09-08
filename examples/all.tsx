@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import Slider, { SliderIndicator, useSliderController } from "../slider";
 import "./examples.css";
 
-const ExampleTitle = (props: { title: string }) => {
+const ExampleTitle = (props: { title: string; subtitle?: string }) => {
   return (
     <div className="rslider-example__title">
       <h2>{props.title}</h2>
+      {props.subtitle && <span>{props.subtitle}</span>}
     </div>
   );
 };
@@ -110,7 +111,10 @@ const ControllableExample = () => {
   }, [slider]);
   return (
     <Example>
-      <ExampleTitle title="Controllable slider" />
+      <ExampleTitle
+        title="Controllable slider"
+        subtitle="(use h/l to navigate)"
+      />
       <ExampleContent>
         <Slider
           className="app-slider"

@@ -2,11 +2,12 @@
   "name": "react-slide",
   "version": "1.0.0",
   "description": "Lightweight and customizable React.js slider",
-  "main": "slider.tsx",
+  "main": "build/slider.js",
+  "module": "./slider.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-examples": "node_modules/.bin/esbuild --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap",
-    "build": "npm run-script build-examples",
+    "build-examples": "node_modules/.bin/esbuild --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap --minify",
+    "build": "node_modules/.bin/esbuild --define:process.env.NODE_ENV=\"'production'\" --bundle slider.tsx --outfile=build/slider.js --minify --external:react --external:react-dom --external:classnames",
     "dev": "node_modules/.bin/esbuild --watch --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap",
     "typecheck": "tsc --watch --noEmit"
   },
