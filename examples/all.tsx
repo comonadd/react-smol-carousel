@@ -1,23 +1,31 @@
-import React from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Slider, { SliderIndicator, useSliderController } from "../slider";
 import "./examples.css";
 
-const Example = (props: { title: string; children: React.Children }) => {
-  const { title, children } = props;
+const ExampleTitle = (props: { title: string }) => {
   return (
-    <div className="rslider-example">
-      <div className="rslider-example__title">
-        <h2>{title}</h2>
-      </div>
-      <div className="rslider-example__content">{children}</div>
+    <div className="rslider-example__title">
+      <h2>{props.title}</h2>
     </div>
   );
 };
 
+const ExampleContent = (props: { children: React.Children }) => {
+  return <div className="rslider-example__content">{props.children}</div>;
+};
+
+const Example = (props: { children: React.Children }) => {
+  return <div className="rslider-example">{props.children}</div>;
+};
+
+const ExampleControls = (props: { children: React.Children }) => {
+  return <div className="rslider-example__controls">{props.children}</div>;
+};
+
 const BasicExample = () => {
-  const renderedPics = React.useMemo(() => {
-    const numPics = Math.round(Math.random() * 10);
+  const renderedPics = useMemo(() => {
+    const numPics = Math.round(5);
     const resultingPics = [];
     for (let i = 0; i < numPics; ++i) {
       const backgroundColor = [
@@ -38,27 +46,50 @@ const BasicExample = () => {
     }
     return resultingPics;
   }, []);
+  const [enableKeys, setEnableKeys] = useState(true);
+  const [indicatorClickable, setIndicatorClickable] = useState(false);
   return (
-    <Example title="Basic slider">
-      <Slider
-        className="app-slider"
-        indicator={SliderIndicator.Lines}
-        infinite
-        enableKeys
-        indicatorClickable
-      >
-        {renderedPics}
-      </Slider>
+    <Example>
+      <ExampleTitle title="Basic slider" />
+      <ExampleControls>
+        <div className="example-control">
+          <input
+            type="checkbox"
+            checked={enableKeys}
+            onChange={(e) => setEnableKeys(e.target.checked)}
+          />
+          <label>Enable keys</label>
+        </div>
+        <div className="example-control">
+          <input
+            type="checkbox"
+            checked={indicatorClickable}
+            onChange={(e) => setIndicatorClickable(e.target.checked)}
+          />
+          <label>Indicator clickable</label>
+        </div>
+      </ExampleControls>
+      <ExampleContent>
+        <Slider
+          className="app-slider"
+          indicator={SliderIndicator.Lines}
+          infinite
+          enableKeys={enableKeys}
+          indicatorClickable={indicatorClickable}
+        >
+          {renderedPics}
+        </Slider>
+      </ExampleContent>
     </Example>
   );
 };
 
 const ControllableExample = () => {
   const slider = useSliderController({ infinite: false });
-  React.useEffect(() => {
+  useEffect(() => {
     console.log(`Current slide: ${slider.currentSlide}`);
   }, [slider.currentSlide]);
-  React.useEffect(() => {
+  useEffect(() => {
     const el = (e) => {
       switch (e.keyCode) {
         case 37:
@@ -81,18 +112,21 @@ const ControllableExample = () => {
     };
   }, [slider]);
   return (
-    <Example title="Controllable slider">
-      <Slider
-        className="app-slider"
-        indicator={SliderIndicator.Dots}
-        controller={slider}
-      >
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <div>5</div>
-      </Slider>
+    <Example>
+      <ExampleTitle title="Controllable slider" />
+      <ExampleContent>
+        <Slider
+          className="app-slider"
+          indicator={SliderIndicator.Dots}
+          controller={slider}
+        >
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+          <div>5</div>
+        </Slider>
+      </ExampleContent>
     </Example>
   );
 };
@@ -100,6 +134,7 @@ const ControllableExample = () => {
 const App = () => {
   return (
     <div className="app">
+      <h1>Examples</h1>
       <BasicExample />
       <ControllableExample />
     </div>

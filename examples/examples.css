@@ -1,3 +1,8 @@
+:root {
+  --white: #f0f0f0;
+  --black: #000000;
+}
+
 * {
   margin: 0;
   box-sizing: border-box;
@@ -9,9 +14,15 @@ html, body, #root, .app  {
   font-family: 'Roboto Mono', sans-serif;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 .app {
   display: flex;
   flex-direction: column;
+  padding: 16px;
+  background: var(--black);
 }
 
 .app-slider {
@@ -23,13 +34,37 @@ html, body, #root, .app  {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 400px;
+  height: 500px;
+  background: #ffffff;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+.rslider-example__controls {
+  padding: 16px;
+}
+
+.example-control {
+  display: block;
+}
+
+.rslider-example__controls label {
+  margin-left: 8px;
 }
 
 .rslider-example__title {
-  padding: 24px;
+  padding: 0;
+  margin: 0;
+  padding: 0 16px;
 }
 
 .rslider-example__content {
   flex: 1 1 100%;
+  margin: 16px 0;
+}
+
+h1 {
+  margin-bottom: 12px;
+  color: white;
 }
