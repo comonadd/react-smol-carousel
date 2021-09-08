@@ -20,7 +20,11 @@ const BasicExample = () => {
     const numPics = Math.round(Math.random() * 10);
     const resultingPics = [];
     for (let i = 0; i < numPics; ++i) {
-      const backgroundColor = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+      const backgroundColor = [
+        Math.random() * 255,
+        Math.random() * 255,
+        Math.random() * 255,
+      ];
       resultingPics.push(
         <div
           key={i}
@@ -29,14 +33,19 @@ const BasicExample = () => {
             height: "100%",
             backgroundColor: `rgb(${backgroundColor.join(",")})`,
           }}
-        ></div>,
+        ></div>
       );
     }
     return resultingPics;
   }, []);
   return (
     <Example title="Basic slider">
-      <Slider className="app-slider" indicator={SliderIndicator.Lines} infinite enableKeys>
+      <Slider
+        className="app-slider"
+        indicator={SliderIndicator.Lines}
+        infinite
+        enableKeys
+      >
         {renderedPics}
       </Slider>
     </Example>
@@ -72,7 +81,11 @@ const ControllableExample = () => {
   }, [slider]);
   return (
     <Example title="Controllable slider">
-      <Slider className="app-slider" indicator={SliderIndicator.Dots} controller={slider}>
+      <Slider
+        className="app-slider"
+        indicator={SliderIndicator.Dots}
+        controller={slider}
+      >
         <div>1</div>
         <div>2</div>
         <div>3</div>
