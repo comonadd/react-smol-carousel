@@ -12,6 +12,7 @@
 html, body, #root, .app  {
   width: 100%;
   font-family: 'Roboto Mono', sans-serif;
+  overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -62,6 +63,7 @@ body::-webkit-scrollbar {
 .rslider-example__content {
   flex: 1 1 100%;
   margin: 16px 0;
+  overflow: hidden;
 }
 
 h1 {

@@ -7,35 +7,18 @@ import React, {
   useEffect,
 } from "react";
 import "./slider.css";
+import cn from "classnames";
 
-type CNArg = string[] | Record<string, boolean>;
-const cn = (...cns: CNArg[]): string => {
-  let res = "";
-  for (let i = 0; i < cns.length; ++i) {
-    const cn = cns[i];
-    if (cn instanceof Array) {
-      if (i !== 0) res += " ";
-      res += cn.join(" ");
-    } else if (cn instanceof Object) {
-      let currIdx = i;
-      for (const key in cn) {
-        if (cn[key]) {
-          if (currIdx !== 0) res += " ";
-          res += key;
-          ++currIdx;
-        }
-      }
-    }
-  }
-  return res;
-};
+declare const process: any;
 
 type SCRR = React.Ref<HTMLDivElement>;
 interface SliderController {
   nextSlide: () => void;
   prevSlide: () => void;
   currentSlide: number;
-  __setMetaInfo: (rr: SCRR) => void;
+  setCurrentSlide: (i: number) => void;
+  __controllerId: number;
+  __setMetaInfo: (rr: SliderControllerMetaInfo) => void;
 }
 
 interface SliderControllerOptions {
@@ -67,7 +50,7 @@ export const useSliderController = (
     if (process.env.NODE_ENV === "development") {
       console.assert(metaInfo !== null, "No meta info set");
     }
-    const { numSlides } = metaInfo;
+    const { numSlides } = metaInfo!;
     if (currentSlide === 0) {
       if (infinite) {
         setCurrentSlide(numSlides - 1);
@@ -80,7 +63,7 @@ export const useSliderController = (
     if (process.env.NODE_ENV === "development") {
       console.assert(metaInfo !== null, "No meta info set");
     }
-    const { numSlides } = metaInfo;
+    const { numSlides } = metaInfo!;
     if (currentSlide === numSlides - 1) {
       if (infinite) {
         setCurrentSlide(0);
@@ -89,7 +72,7 @@ export const useSliderController = (
       setCurrentSlide(currentSlide + 1);
     }
   }, [currentSlide, metaInfo]);
-  const __setMetaInfo = useCallback(setMetaInfo);
+  const __setMetaInfo = setMetaInfo;
   return {
     currentSlide,
     nextSlide,
@@ -109,13 +92,14 @@ export interface SliderProps extends SliderControllerOptions {
   indicator?: SliderIndicator;
   enableKeys?: boolean; // enable arrow keys
   indicatorClickable?: boolean; // enable navigation with indicator click
-  children: React.Children;
+  children: any;
   className?: string;
-  controller?: Controller;
+  controller?: SliderController;
   classes?: {
     container?: string;
+    control?: string;
+    slide?: string;
   };
-  __setMetaInfo: any;
 }
 
 const styles: any = {};
@@ -149,11 +133,11 @@ const Slider = (props: SliderProps) => {
   const moveRight = () => {
     nextSlide();
   };
-  const slidesRef = useRef([]);
+  const slidesRef = useRef<any[]>([]);
   const renderedSlides = useMemo(() => {
-    return children.map((slide, idx) => {
+    return children.map((slide: any, idx: number) => {
       const active = idx === currentSlide;
-      slidesRef.current[idx] = React.createRef(null);
+      slidesRef.current[idx] = React.createRef();
       return (
         <div
           key={idx}
@@ -167,12 +151,13 @@ const Slider = (props: SliderProps) => {
       );
     });
   }, [children, currentSlide]);
-  const sliderContainerRef = useRef(null);
+  const sliderContainerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (slidesRef.current.length === 0) return;
-    const elem = slidesRef.current[currentSlide].current;
-    sliderContainerRef.current.scrollLeft = elem.offsetLeft;
+    if (sliderContainerRef.current === null) return;
+    const elem = (slidesRef.current![currentSlide] as any).current;
+    sliderContainerRef.current!.scrollLeft = elem.offsetLeft;
   }, [renderedSlides]);
 
   const renderedIndicator = useMemo(() => {
@@ -220,9 +205,10 @@ const Slider = (props: SliderProps) => {
   const isThereSomethingToLeft = infinite || currentSlide !== 0;
   const isThereSomethingToRight =
     infinite || currentSlide !== amountOfSlides - 1;
-  const [mouseDown, setMouseDown] = useState<bool>(false);
+  const [mouseDown, setMouseDown] = useState<boolean>(false);
 
   const onMouseDown = useCallback((e) => {
+    e.preventDefault();
     const el = sliderContainerRef.current!;
     initialMouseScrollPos.current = {
       x: e.clientX,
@@ -293,7 +279,7 @@ const Slider = (props: SliderProps) => {
 
   useEffect(() => {
     if (sliderContainerRef.current) {
-      sliderContainerRef.current.addEventListener(
+      sliderContainerRef.current!.addEventListener(
         "keydown",
         onContainerKeyDown,
         false
@@ -301,7 +287,7 @@ const Slider = (props: SliderProps) => {
     }
     return () => {
       if (sliderContainerRef.current) {
-        sliderContainerRef.current.removeEventListener(
+        sliderContainerRef.current!.removeEventListener(
           "keydown",
           onContainerKeyDown,
           false
@@ -311,11 +297,16 @@ const Slider = (props: SliderProps) => {
   }, [onContainerKeyDown]);
 
   return (
-    <div className={cn([props.className, "rslider"])}>
+    <div
+      className={cn([props.className, "rslider"])}
+      onClick={(e) => {
+        sliderContainerRef.current!.focus();
+      }}
+    >
       <div
         className={cn(["rslider__control", "rslider__left", classes.control])}
         onClick={moveLeft}
-        disabled={!isThereSomethingToLeft}
+        {...({ disabled: !isThereSomethingToLeft } as any)}
       >
         Left
       </div>
@@ -323,7 +314,7 @@ const Slider = (props: SliderProps) => {
         <div className={"rslider__view"}>
           <div
             className={"rslider__content"}
-            tabIndex="0"
+            tabIndex={0}
             ref={sliderContainerRef}
             onMouseDown={onMouseDown}
           >
@@ -335,7 +326,7 @@ const Slider = (props: SliderProps) => {
       <div
         className={cn(["rslider__control", "rslider__right", classes.control])}
         onClick={moveRight}
-        disabled={!isThereSomethingToRight}
+        {...({ disabled: !isThereSomethingToRight } as any)}
       >
         Right
       </div>

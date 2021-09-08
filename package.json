@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-examples": "node_modules/.bin/esbuild --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap",
     "build": "npm run-script build-examples",
-    "dev": "node_modules/.bin/esbuild --watch --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap"
+    "dev": "node_modules/.bin/esbuild --watch --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap",
+    "typecheck": "tsc --watch --noEmit"
   },
   "repository": {
     "type": "git",
@@ -25,9 +26,13 @@
   },
   "homepage": "https://github.com/dmitryguzeev/react-slide#readme",
   "devDependencies": {
-    "esbuild": "^0.9.6"
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "esbuild": "^0.9.6",
+    "typescript": "^4.4.2"
   },
   "dependencies": {
+    "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }

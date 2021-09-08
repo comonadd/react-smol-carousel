@@ -25,12 +25,14 @@
   background: black;
   cursor: grab;
   user-select: none;
+  position: relative;
 }
 
 .rslider__view {
   width: 100%;
   flex: 1 1 100%;
   overflow: hidden;
+  height: 100%;
 }
 
 .rslider__content {
@@ -42,6 +44,11 @@
   scroll-behavior: smooth;
 }
 
+.rslider__content img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+}
 
 .rslider-slide {
   font-size: 36px;
@@ -59,6 +66,7 @@
   transform-origin: center center;
   transform: scale(1);
   transition: transform 0.5s;
+  height: 100%;
 }
 
 .rslider__control {
@@ -99,6 +107,9 @@
   height: 40px;
   align-items: center;
   justify-content: center;
+  bottom: 0;
+  left: 0;
+  position: absolute;
 }
 
 .rslider__line-indicator-item {

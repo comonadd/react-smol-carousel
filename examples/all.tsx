@@ -11,37 +11,34 @@ const ExampleTitle = (props: { title: string }) => {
   );
 };
 
-const ExampleContent = (props: { children: React.Children }) => {
+const ExampleContent = (props: { children: any }) => {
   return <div className="rslider-example__content">{props.children}</div>;
 };
 
-const Example = (props: { children: React.Children }) => {
+const Example = (props: { children: any }) => {
   return <div className="rslider-example">{props.children}</div>;
 };
 
-const ExampleControls = (props: { children: React.Children }) => {
+const ExampleControls = (props: { children: any }) => {
   return <div className="rslider-example__controls">{props.children}</div>;
 };
 
+const IMAGES = [
+  "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/1024px-Lion_waiting_in_Namibia.jpg",
+];
+
 const BasicExample = () => {
   const renderedPics = useMemo(() => {
-    const numPics = Math.round(5);
+    const numPics = IMAGES.length;
     const resultingPics = [];
     for (let i = 0; i < numPics; ++i) {
-      const backgroundColor = [
-        Math.random() * 255,
-        Math.random() * 255,
-        Math.random() * 255,
-      ];
       resultingPics.push(
-        <div
+        <img
           key={i}
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: `rgb(${backgroundColor.join(",")})`,
-          }}
-        ></div>
+          src={IMAGES[i]}
+          style={{ width: "auto", height: "100%" }}
+        />
       );
     }
     return resultingPics;
@@ -90,15 +87,15 @@ const ControllableExample = () => {
     console.log(`Current slide: ${slider.currentSlide}`);
   }, [slider.currentSlide]);
   useEffect(() => {
-    const el = (e) => {
-      switch (e.keyCode) {
-        case 37:
+    const el = (e: any) => {
+      switch (e.key) {
+        case "h":
           {
             // left
             slider.prevSlide();
           }
           break;
-        case 39:
+        case "l":
           {
             // right
             slider.nextSlide();
