@@ -36,7 +36,7 @@ const BasicExample = () => {
   }, []);
   return (
     <Example title="Basic slider">
-      <Slider className="app-slider" indicator={SliderIndicator.Lines} infinite>
+      <Slider className="app-slider" indicator={SliderIndicator.Lines} infinite enableKeys>
         {renderedPics}
       </Slider>
     </Example>

@@ -89,6 +89,7 @@ export enum SliderIndicator {
 
 export interface SliderProps extends SliderControllerOptions {
   indicator?: SliderIndicator;
+  enableKeys?: boolean; // enable arrow keys
   children: React.Children;
   className?: string;
   controller?: Controller;
@@ -106,7 +107,7 @@ const itcn = {
 };
 
 const Slider = (props: SliderProps) => {
-  const { indicator, children, infinite } = props;
+  const { enableKeys = false, indicator, children, infinite } = props;
   const { __controllerId, __setMetaInfo, nextSlide, prevSlide, currentSlide } =
     props.controller ?? useSliderController(props);
   const classes = props.classes ?? {};
@@ -214,8 +215,40 @@ const Slider = (props: SliderProps) => {
     };
   }, [mouseDown, onMouseScrollMove]);
 
+  const onContainerKeyDown = React.useCallback((e) => {
+    switch (e.keyCode) {
+      case 37: {
+        // left
+        // disable default scrolling behaviour for arrow keys
+        e.preventDefault();
+        if (enableKeys) {
+          prevSlide();
+        }
+      } break;
+      case 39:
+        // right
+        e.preventDefault();
+        if (enableKeys) {
+          nextSlide();
+        }
+        break;
+    }
+    }, [prevSlide, nextSlide, enableKeys]);
+
+  useEffect(() => {
+    if (sliderContainerRef.current) {
+      sliderContainerRef.current.addEventListener("keydown", onContainerKeyDown, false);
+    }
+    return () => {
+      if (sliderContainerRef.current) {
+        sliderContainerRef.current.removeEventListener("keydown", onContainerKeyDown, false);
+      }
+    };
+  }, [onContainerKeyDown]);
+
   return (
-    <div className={cn([props.className, "rslider"])}>
+    <div className={cn([props.className, "rslider"])}
+    >
       <div
         className={cn(["rslider__control", "rslider__left", classes.control])}
         onClick={moveLeft}
@@ -225,7 +258,12 @@ const Slider = (props: SliderProps) => {
       </div>
       <div className={cn(["rslider__current"])}>
         <div className={"rslider__view"}>
-          <div className={"rslider__content"} ref={sliderContainerRef} onMouseDown={onMouseDown}>
+            <div
+              className={"rslider__content"}
+              tabIndex="0"
+              ref={sliderContainerRef}
+              onMouseDown={onMouseDown}
+            >
             {renderedSlides}
           </div>
         </div>
