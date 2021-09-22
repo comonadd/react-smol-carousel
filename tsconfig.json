@@ -12,9 +12,8 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react"
   },
-  "include": ["./**/*.tsx", "./**/*.ts"],
+  "include": ["slider.tsx"],
   "exclude": ["node_modules"]
 }
