@@ -50,6 +50,38 @@ const CustomUIExample = () => {
               {"<<<"}
             </div>
           )}
+          renderIndicator={({ numSlides, currentSlide }) => {
+            let ind = [];
+            console.log(currentSlide);
+            for (let i = 0; i < numSlides; ++i) {
+              const color = i === currentSlide ? "black" : "white";
+              ind.push(
+                <span
+                  style={{
+                    color,
+                    fontWeight: "bold",
+                    fontSize: 34,
+                    marginRight: 2,
+                    marginLeft: 2,
+                  }}
+                  key={i}
+                >
+                  {i + 1}
+                </span>
+              );
+            }
+            return (
+              <div
+                style={{
+                  bottom: 0,
+                  position: "absolute",
+                  padding: "8px 0",
+                }}
+              >
+                {ind}
+              </div>
+            );
+          }}
         >
           {renderedPics}
         </Slider>

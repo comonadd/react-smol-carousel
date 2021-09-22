@@ -108,6 +108,10 @@ export interface SliderProps extends SliderControllerOptions {
     isThereNextSlide: boolean;
     nextSlide: () => void;
   }) => React.ReactElement;
+  renderIndicator?: (props: {
+    numSlides: number;
+    currentSlide: number;
+  }) => React.ReactElement;
 }
 
 const styles: any = {};
@@ -169,6 +173,9 @@ const Slider = (props: SliderProps) => {
   }, [renderedSlides]);
 
   const renderedIndicator = useMemo(() => {
+    if (props.renderIndicator) {
+      return props.renderIndicator({ numSlides, currentSlide });
+    }
     if (indicator === undefined) return null;
     const containerCn = itcn[indicator];
     if (process.env.NODE_ENV === "development") {
