@@ -100,6 +100,14 @@ export interface SliderProps extends SliderControllerOptions {
     control?: string;
     slide?: string;
   };
+  renderPrevControl?: (props: {
+    isTherePrevSlide: boolean;
+    prevSlide: () => void;
+  }) => React.ReactElement;
+  renderNextControl?: (props: {
+    isThereNextSlide: boolean;
+    nextSlide: () => void;
+  }) => React.ReactElement;
 }
 
 const styles: any = {};
@@ -296,6 +304,36 @@ const Slider = (props: SliderProps) => {
     };
   }, [onContainerKeyDown]);
 
+  const renderedPrevControl = props.renderPrevControl ? (
+    props.renderPrevControl({
+      isTherePrevSlide: isThereSomethingToLeft,
+      prevSlide: moveLeft,
+    })
+  ) : (
+    <div
+      className={cn(["rslider__control", "rslider__left", classes.control])}
+      onClick={moveLeft}
+      {...({ disabled: !isThereSomethingToLeft } as any)}
+    >
+      Left
+    </div>
+  );
+
+  const renderedNextControl = props.renderNextControl ? (
+    props.renderNextControl({
+      isThereNextSlide: isThereSomethingToRight,
+      nextSlide: moveRight,
+    })
+  ) : (
+    <div
+      className={cn(["rslider__control", "rslider__right", classes.control])}
+      onClick={moveRight}
+      {...({ disabled: !isThereSomethingToRight } as any)}
+    >
+      Right
+    </div>
+  );
+
   return (
     <div
       className={cn([props.className, "rslider"])}
@@ -303,13 +341,7 @@ const Slider = (props: SliderProps) => {
         sliderContainerRef.current!.focus();
       }}
     >
-      <div
-        className={cn(["rslider__control", "rslider__left", classes.control])}
-        onClick={moveLeft}
-        {...({ disabled: !isThereSomethingToLeft } as any)}
-      >
-        Left
-      </div>
+      {renderedPrevControl}
       <div className={cn(["rslider__current"])}>
         <div className={"rslider__view"}>
           <div
@@ -323,13 +355,7 @@ const Slider = (props: SliderProps) => {
         </div>
         {renderedIndicator}
       </div>
-      <div
-        className={cn(["rslider__control", "rslider__right", classes.control])}
-        onClick={moveRight}
-        {...({ disabled: !isThereSomethingToRight } as any)}
-      >
-        Right
-      </div>
+      {renderedNextControl}
     </div>
   );
 };
