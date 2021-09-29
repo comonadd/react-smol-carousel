@@ -2,6 +2,12 @@
 
 Lightweight React.js carousel implementation with react hooks support.
 
+## Install
+
+```bash
+npm install react-smol-carousel
+```
+
 ## Usage
 
 ```js
@@ -43,10 +49,10 @@ const App = () => {
         indicator={SliderIndicator.Dots}
         controller={slider}
       >
-        <div>Hello</div>
-        <div>This is me</div>
-        <div>How are you</div>
-        <div>Bye</div>
+        <div>A</div>
+        <div>Somewhat</div>
+        <div>Important</div>
+        <div>Slide</div>
       </Slider>
     </div>
   );

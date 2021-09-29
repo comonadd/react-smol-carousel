@@ -1,9 +1,8 @@
 {
   "name": "react-smol-carousel",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Lightweight and customizable React.js carousel",
   "main": "./build/slider.cjs.js",
-  "browser": "./build/slider.min.js",
   "module": "./build/slider.esm.js",
   "types": "./build/slider.d.ts",
   "files": [
@@ -12,17 +11,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-examples": "node_modules/.bin/esbuild --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap --minify",
-    "build-esm": "esbuild --define:process.env.NODE_ENV=\"'production'\" --bundle slider.tsx --outfile=build/slider.esm.js --minify --external:react --external:react-dom --external:classnames --format=esm",
+    "build-esm": "esbuild --target=es2018 --define:process.env.NODE_ENV=\"'production'\" --bundle slider.tsx --outfile=build/slider.esm.js --external:react --external:react-dom --external:classnames --format=esm",
     "build-cjs": "esbuild --define:process.env.NODE_ENV=\"'production'\" --bundle slider.tsx --outfile=build/slider.cjs.js --minify --external:react --external:react-dom --external:classnames --format=cjs",
-    "build-iife": "esbuild --define:process.env.NODE_ENV=\"'production'\" --bundle slider.tsx --outfile=build/slider.min.js --minify --external:react --external:react-dom --external:classnames --format=iife",
     "typegen": "tsc -d -p . --outDir build --emitDeclarationOnly",
-    "build": "npm run-script build-esm && npm run-script build-cjs && npm run-script build-iife && npm run-script typegen",
+    "build": "npm run-script build-esm && npm run-script build-cjs && npm run-script typegen",
     "dev": "node_modules/.bin/esbuild --watch --define:process.env.NODE_ENV=\"'development'\" --bundle examples/all.tsx --outfile=examples/bundle.js --sourcemap",
     "typecheck": "tsc --watch --noEmit"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dmitryguzeev/react-slide.git"
+    "url": "git+https://github.com/comonadd/react-smol-carousel.git"
   },
   "keywords": [
     "react",
@@ -32,9 +30,9 @@
   "author": "Dmitry Guzeev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dmitryguzeev/react-slide/issues"
+    "url": "https://github.com/comonadd/react-smol-carousel/issues"
   },
-  "homepage": "https://github.com/dmitryguzeev/react-slide#readme",
+  "homepage": "https://github.com/comonadd/react-smol-carousel#readme",
   "devDependencies": {
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
